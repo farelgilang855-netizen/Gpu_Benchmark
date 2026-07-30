@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Antigravity GPU Benchmark</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- The canvas for WebGL rendering -->
+    <canvas id="bg-canvas"></canvas>
+
+    <div id="app">
+      <!-- Start Phase -->
+      <div id="phase-start" class="phase active">
+        <div class="glass-card main-card">
+          <div class="logo">
+            <h1>AG-BENCH</h1>
+            <div id="gpu-info-badge" class="gpu-badge">Mendeteksi GPU...</div>
+          </div>
+          <p>Uji batas maksimal performa grafis perangkat Anda dengan 3D rendering berintensitas tinggi.</p>
+          
+          <div class="mode-selector">
+            <span class="mode-label">Tingkat Intensitas:</span>
+            <div class="mode-buttons">
+              <button class="mode-btn" data-mode="low">LOW</button>
+              <button class="mode-btn active" data-mode="medium">MEDIUM</button>
+              <button class="mode-btn" data-mode="high">HIGH</button>
+            </div>
+          </div>
+
+          <button id="btn-start" class="btn-primary">
+            <span class="btn-text">MULAI BENCHMARK</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Running Phase -->
+      <div id="phase-running" class="phase">
+        <div class="metrics-overlay">
+          <div class="metric-box">
+            <span class="metric-label">FPS</span>
+            <span id="metric-fps" class="metric-value">0</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">OBJEK</span>
+            <span id="metric-objects" class="metric-value">0</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">SISA WAKTU</span>
+            <span id="metric-time" class="metric-value">30s</span>
+          </div>
+        </div>
+        <div class="progress-bar-container">
+          <div id="progress-bar" class="progress-bar"></div>
+        </div>
+      </div>
+
+      <!-- Result Phase -->
+      <div id="phase-result" class="phase">
+        <div class="glass-card result-card">
+          <h2>Benchmark Selesai</h2>
+          
+          <div class="score-container">
+            <span class="score-label">SKOR TOTAL</span>
+            <span id="result-score" class="score-value">0</span>
+          </div>
+
+          <div class="result-details">
+            <div class="detail-item">
+              <span class="detail-label">Rata-rata FPS</span>
+              <span id="result-avg-fps" class="detail-value">0</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Rating</span>
+              <span id="result-rating" class="detail-value rating-badge">TBD</span>
+            </div>
+          </div>
+          
+          <button id="btn-restart" class="btn-secondary">ULANGI TES</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
