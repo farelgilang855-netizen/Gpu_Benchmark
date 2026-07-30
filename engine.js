@@ -24,6 +24,8 @@ let startTime = 0;
 export function getGpuInfo() {
   if (!renderer) return 'Unknown GPU';
   const gl = renderer.getContext();
+  if (!gl) return 'WebGL Context Lost';
+  
   const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
   if (debugInfo) {
     return gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
@@ -43,6 +45,12 @@ export function initEngine() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setClearColor(0x030305);
+  
+  canvas.addEventListener('webglcontextlost', function(e) {
+    e.preventDefault();
+    alert("CRASH! GPU Anda kelebihan beban dan di-reset oleh sistem. Refresh halaman untuk memulihkan.");
+    if(isRunning) stopBenchmark();
+  }, false);
   
   const ambientLight = new THREE.AmbientLight(0x222222);
   scene.add(ambientLight);
@@ -83,11 +91,12 @@ function setupMesh(mode) {
     incrementPerSecond = 5000;
   } else if (mode === 'medium') {
     geometry = new THREE.CylinderGeometry(0.3, 0.3, 0.6, 16);
-    incrementPerSecond = 15000;
+    incrementPerSecond = 10000;
   } else {
     // high
-    geometry = new THREE.TorusKnotGeometry(0.3, 0.1, 64, 16);
-    incrementPerSecond = 25000;
+    // Mengurangi detail sedikit agar tidak langsung crash dalam 5 detik
+    geometry = new THREE.TorusKnotGeometry(0.3, 0.1, 32, 8);
+    incrementPerSecond = 8000;
   }
 
   instancedMesh = new THREE.InstancedMesh(geometry, material, MAX_INSTANCES);
