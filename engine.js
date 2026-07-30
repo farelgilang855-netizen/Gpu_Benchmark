@@ -34,9 +34,10 @@ export function getGpuInfo() {
 }
 
 export function initEngine() {
-  const canvas = document.getElementById('bg-canvas');
-  scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x030305, 0.002);
+  try {
+    const canvas = document.getElementById('bg-canvas');
+    scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x030305, 0.002);
   
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.z = 50;
