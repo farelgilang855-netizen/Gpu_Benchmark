@@ -39,34 +39,40 @@ export function initEngine() {
     scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x030305, 0.002);
   
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.z = 50;
-  
-  renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: "high-performance" });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(0x030305);
-  
-  canvas.addEventListener('webglcontextlost', function(e) {
-    e.preventDefault();
-    alert("CRASH! GPU Anda kelebihan beban dan di-reset oleh sistem. Refresh halaman untuk memulihkan.");
-    if(isRunning) stopBenchmark();
-  }, false);
-  
-  const ambientLight = new THREE.AmbientLight(0x222222);
-  scene.add(ambientLight);
-  
-  const dirLight1 = new THREE.DirectionalLight(0xff0055, 1);
-  dirLight1.position.set(10, 20, 10);
-  scene.add(dirLight1);
-  
-  const dirLight2 = new THREE.DirectionalLight(0x00f2fe, 1);
-  dirLight2.position.set(-10, -20, -10);
-  scene.add(dirLight2);
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 50;
+    
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: "high-performance" });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x030305);
+    
+    canvas.addEventListener('webglcontextlost', function(e) {
+      e.preventDefault();
+      alert("CRASH! GPU Anda kelebihan beban dan di-reset oleh sistem. Refresh halaman untuk memulihkan.");
+      if(isRunning) stopBenchmark();
+    }, false);
+    
+    const ambientLight = new THREE.AmbientLight(0x222222);
+    scene.add(ambientLight);
+    
+    const dirLight1 = new THREE.DirectionalLight(0xff0055, 1);
+    dirLight1.position.set(10, 20, 10);
+    scene.add(dirLight1);
+    
+    const dirLight2 = new THREE.DirectionalLight(0x00f2fe, 1);
+    dirLight2.position.set(-10, -20, -10);
+    scene.add(dirLight2);
 
-  setupMesh('medium');
-  
-  requestAnimationFrame(idleLoop);
+    setupMesh('medium');
+    
+    requestAnimationFrame(idleLoop);
+  } catch (error) {
+    console.error("WebGL Init Error:", error);
+    const badge = document.getElementById('gpu-info-badge');
+    if (badge) badge.textContent = "WebGL Terblokir/Crash";
+    alert("Gagal memuat WebGL 3D! Browser Anda memblokir fitur grafis karena crash sebelumnya. \n\nSOLUSI: Harap TUTUP SELURUH BROWSER CHROME (Close X), lalu buka kembali halamannya.");
+  }
 }
 
 function setupMesh(mode) {
